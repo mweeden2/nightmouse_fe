@@ -1,6 +1,8 @@
 const GRID_SIZE = 6;
 const CELL_STATES = ["blank", "wall", "cheese", "gravel"];
 
+let cells_list = []
+
 //  Generate the game's cells
 // ================================
 const grid_container = document.querySelector("#grid-container");
@@ -8,31 +10,29 @@ for (let i = 0; i < GRID_SIZE; i++) {
     let grid_row = `<div class="grid-row" id="row-${i}">`;
     for (let j = 0; j < GRID_SIZE; j++) {
         grid_row += `
-            <div class="cell blank" id="cell-${i.toString() + "-" + j.toString()}"></div>`;
+            <div draggable="true" class="cell blank" id="cell-${i.toString() + "-" + j.toString()}"></div>`;
+        let cell = { index: i.toString()+"-"+j.toString(), states: ["blank"], corner: false};
+        cells_list.push(cell);
     }
     grid_row += `</div>`;
     grid_container.insertAdjacentHTML("beforeend", grid_row);
 }
 
-//  Color corner cells
+//  Color and update corner cells
 // ================================
 const corner_indexes = [`0-0`, `0-${GRID_SIZE - 1}`, `${GRID_SIZE - 1}-${GRID_SIZE - 1}`, `${GRID_SIZE - 1}-0`];
 for (let x of corner_indexes) {
-    console.log(`#cell-${x}`);
     const corner = document.querySelector(`#cell-${x}`);
-    console.log(corner);
     corner.classList += " corner";
+    cells_list.filter(cell => cell.index === x)[0].corner = true;
 }
-
 
 // Set "click through" cell event handler
 // ================================
 function clickCell(cell_index) {
     const cell = document.querySelector(`#cell-${cell_index}`);
     const state_index = CELL_STATES.indexOf(cell.classList[1]);
-    console.log(CELL_STATES[(state_index+1)%CELL_STATES.length]);
     cell.classList.replace(cell.classList[1], CELL_STATES[(state_index+1)%CELL_STATES.length]);
-    console.log(cell);
 }
 
 const cells = document.querySelectorAll(".cell");
