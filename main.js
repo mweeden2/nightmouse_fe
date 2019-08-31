@@ -1,11 +1,15 @@
 const GRID_SIZE = 6;
 const CORNER_INDICES = ["0-0", `0-${GRID_SIZE-1}`, `${GRID_SIZE-1}-${GRID_SIZE-1}`, `${GRID_SIZE-1}-0`];
+const PLAYER_STATES = ["player1", "player2", "player1-current", "player2-current", "player1-past", "player2-past"]
 const CELL_STATES = ["blank", "wall", "cheese", "gravel"];
-const CORNER_CELL_STATES = ["blank", "player1-current", "player2-current", "player1-past", "player2-past"]
+const CORNER_CELL_STATES = PLAYER_STATES.slice();
+CORNER_CELL_STATES.push("blank");
+
 const PLAYER_1_SYMBOL = "M";
 const PLAYER_2_SYMBOL = "C";
 
 let cells_list = []
+
 
 //  Generate the game's cells
 // ================================
@@ -42,11 +46,9 @@ for (let x of corner_indexes) {
 function clickCell(cell_index) {
     if (CORNER_INDICES.indexOf(cell_index) > -1) {
         clickCorner(cell_index);
-        console.log("corner clicked");
     }
     else {
         clickNonCorner(cell_index);
-        console.log("non-corner clicked");
     }
 }
 
@@ -65,12 +67,12 @@ function clickCorner(cell_index) {
     cell.states.unshift(CORNER_CELL_STATES[new_state_index]); // add a new first state
     const cell_div = document.querySelector(`#cell-${cell_index}`);
     cell_div.classList.replace(cell_div.classList[1], CORNER_CELL_STATES[new_state_index]);
+    console.log(cell.states[0]);
 }
 
 function clickNonCorner(cell_index) {
 
     // Get the cell_index cell object
-    //const cell = document.querySelector(`#cell-${cell_index}`);
     const cell = cells_list.filter(c => c.index === cell_index)[0];
 
     // Get the index of the CELL_STATES array associated with the cell object's current state and new state
@@ -88,4 +90,14 @@ const cells = document.querySelectorAll(".cell");
 for (let cell of cells) {
     // Use the end of the .cell div's id to get its index
     cell.onclick = () => { clickCell(cell.id.substring(5, 8)) };
+}
+
+function setStateContent(cell_index, state) {
+
+    // Get the cell_index cell object
+    let cell = cells_list.filter(c => c.index === cell_index)[0];
+
+
+    const cell_div = document.querySelector(`#cell-${cell_index}`);
+
 }

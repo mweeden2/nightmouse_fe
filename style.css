@@ -19,6 +19,9 @@ body {
     width: 100px;
     border: 2px solid black;
     margin: 2px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 40px;
+    text-align: center;
 }
 
 .corner {
@@ -36,5 +39,3 @@ body {
 .gravel {
     background: lightgrey;
 }
-
-/* TODO: add player_-current and player_-past styles with content: ... */
